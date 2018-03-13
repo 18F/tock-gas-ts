@@ -22,8 +22,8 @@ Now edit `src/config.ts` as needed.
 
 ### Running in GAS
 
-The function exposed to the GAS runtime as `main` will be taken from
-`src/main.ts`'s default export.
+Any functions exported in `src/public.ts` will be exposed to the
+GAS runtime as top-level functions.
 
 To create the final bundle for export to GAS, run:
 
@@ -39,7 +39,7 @@ them because we don't have API access to Google Apps.)
 
 ### Running in Node
 
-To run the `main` function in a Node shim that emulates the GAS
+To run any public function in a Node shim that emulates the GAS
 runtime, run:
 
 ```

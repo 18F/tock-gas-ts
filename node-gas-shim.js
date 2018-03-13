@@ -34,6 +34,38 @@ global.Logger = {
     }
 };
 
-// Now run the main exported GAS function.
+// Now run the exported GAS function.
 
-require('./src/main.ts')['default']();
+if (module.parent === null) {
+    const MOD_PATH = './src/public.ts';
+    const path = require('path');
+    const public = require(MOD_PATH);
+    let funcName = process.argv[2];
+
+    if (!funcName) {
+        const cmd = path.basename(process.argv[1]);
+        const funcNames = Object.keys(public).filter(name => {
+            return typeof(public[name]) === 'function';
+        });
+
+        if (funcNames.length === 0) {
+            console.log(`Please export functions in ${MOD_PATH}!`);
+            process.exit(1);
+        } else if (funcNames.length === 1) {
+            funcName = funcNames[0];
+        } else {
+            const funcs = funcNames.join('|');
+            console.log(`usage: ${cmd} <${funcs}>`);
+            process.exit(1);
+        }
+    }
+
+    const func = public[funcName];
+
+    if (typeof(func) !== 'function') {
+        console.log(`${funcName} is not a function in ${MOD_PATH}!`);
+        process.exit(1);
+    }
+
+    func();
+}

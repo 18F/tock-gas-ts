@@ -11,7 +11,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "tsc && cat node_modules/almond/almond.js build/bundle-amd.js build/outro.gs > build/bundle.gs",
+    "build": "tsc && node build/define-functions.js > build/top-level-functions.gs && cat node_modules/almond/almond.js build/bundle-amd.gs build/top-level-functions.gs > build/bundle.gs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Atul Varma <atul.varma@gsa.gov>",

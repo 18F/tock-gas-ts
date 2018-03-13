@@ -5,7 +5,7 @@
         "removeComments": false,
         "preserveConstEnums": true,
         "strict": true,
-        "outFile": "build/bundle-amd.js",
+        "outFile": "build/bundle-amd.gs",
         "sourceMap": false
     },
     "include": [

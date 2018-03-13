@@ -1,4 +1,5 @@
 node_modules/
-bundle-amd.js
-bundle.gs
-config.ts
+build/bundle-amd.gs
+build/bundle.gs
+build/top-level-functions.gs
+src/config.ts
