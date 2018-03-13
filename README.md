@@ -1,5 +1,6 @@
 This is an attempt to make a simple TypeScript-based
-[Google Apps Script (GAS)][GAS] project.
+[Google Apps Script (GAS)][GAS] project for interacting
+with [Tock][] data.
 
 ## Quick start
 
@@ -43,5 +44,12 @@ runtime, run:
 node node-gas-shim.js
 ```
 
+## Other resources
+
+* [18F/Ops-GAS-Public](https://github.com/18F/Ops-GAS-Public) is an
+  archived repository containing various Google Apps Scripts used
+  for 18F operations.
+
+[Tock]: https://github.com/18F/tock
 [GAS]: https://developers.google.com/apps-script/
 [script.google.com]: https://script.google.com/
