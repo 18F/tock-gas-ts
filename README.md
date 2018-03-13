@@ -3,13 +3,23 @@ This is an attempt to make a simple TypeScript-based
 
 ## Quick start
 
-First, create the configuration module:
+### Setup
+
+First, install dependencies:
+
+```
+npm install
+```
+
+Then create the configuration module:
 
 ```
 cp config.ts.sample config.ts
 ```
 
 Now edit `config.ts` as needed.
+
+### Running in GAS
 
 The function exposed to the GAS runtime as `main` will be taken from
 `main.ts`'s default export.
@@ -23,6 +33,15 @@ cat bundle.gs | pbcopy
 
 Now paste your clipboard contents into a `.gs` file at
 [script.google.com][].
+
+### Running in Node
+
+To run the `main` function in a Node shim that emulates the GAS
+runtime, run:
+
+```
+node node-gas-shim.js
+```
 
 [GAS]: https://developers.google.com/apps-script/
 [script.google.com]: https://script.google.com/

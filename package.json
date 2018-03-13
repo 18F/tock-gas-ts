@@ -5,6 +5,8 @@
   "dependencies": {
     "@types/google-apps-script": "0.0.21",
     "almond": "^0.3.3",
+    "sync-request": "^6.0.0",
+    "ts-node": "^5.0.1",
     "typescript": "^2.7.2"
   },
   "devDependencies": {},

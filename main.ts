@@ -8,5 +8,7 @@ export default function myFunction() {
       'Authorization': `Token ${TOCK_API_KEY}`
     }
   });
-  Logger.log(response.getContentText());
+  const res = JSON.parse(response.getContentText());
+
+  Logger.log(res[0].user);
 }
