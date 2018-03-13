@@ -33,7 +33,9 @@ cat bundle.gs | pbcopy
 ```
 
 Now paste your clipboard contents into a `.gs` file at
-[script.google.com][].
+[script.google.com][]. (Note that while deployment is supported
+through the command-line by tools like `clasp`, we can't use
+them because we don't have API access to Google Apps.)
 
 ### Running in Node
 
@@ -48,7 +50,14 @@ node node-gas-shim.js
 
 * [18F/Ops-GAS-Public](https://github.com/18F/Ops-GAS-Public) is an
   archived repository containing various Google Apps Scripts used
-  for 18F operations.
+  for 18F operations. It is no longer used, because it took too
+  long to run, triggering Google Apps Script's quota or and/or
+  timeout limits.
+
+* [clasp](https://github.com/google/clasp) is a Google-built
+  toolchain that allows Google Apps Scripts to be developed and
+  deployed locally. However, it seems to require API access to
+  Google Apps, which we don't have at GSA.
 
 [Tock]: https://github.com/18F/tock
 [GAS]: https://developers.google.com/apps-script/
