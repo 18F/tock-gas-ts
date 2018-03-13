@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "AMD",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "strict": true,
+        "outFile": "bundle-amd.js",
+        "sourceMap": false
+    },
+    "include": [
+        "*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}

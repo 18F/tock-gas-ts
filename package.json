@@ -1,0 +1,17 @@
+{
+  "name": "google-apps-script-fun",
+  "version": "1.0.0",
+  "description": "Example TypeScript-based Google Apps Script project.",
+  "dependencies": {
+    "@types/google-apps-script": "0.0.21",
+    "almond": "^0.3.3",
+    "typescript": "^2.7.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "tsc && cat node_modules/almond/almond.js bundle-amd.js outro.gs > bundle.gs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Atul Varma <atul.varma@gsa.gov>",
+  "license": "CC0-1.0"
+}
