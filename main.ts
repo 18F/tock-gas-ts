@@ -1,14 +1,6 @@
-import { TOCK_API_KEY } from './config';
-
-const TOCK_API_URL = "https://tock.18f.gov/api";
+import * as tock from './tock';
 
 export default function myFunction() {
-  var response = UrlFetchApp.fetch(`${TOCK_API_URL}/user_data.json`, {
-    headers: {
-      'Authorization': `Token ${TOCK_API_KEY}`
-    }
-  });
-  const res = JSON.parse(response.getContentText());
-
-  Logger.log(res[0].user);
+    const res = tock.getUserData();
+    Logger.log(res[0]);
 }
