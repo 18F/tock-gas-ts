@@ -1,6 +1,4 @@
-import { TOCK_API_KEY } from './config';
-
-const TOCK_API_URL = "https://tock.18f.gov/api";
+import { TOCK_API_KEY, TOCK_API_URL } from './config';
 
 export interface QueryArgs {
     [key: string]: string;
