@@ -15,21 +15,21 @@ npm install
 Then create the configuration module:
 
 ```
-cp config.ts.sample config.ts
+cp src/config.ts.sample src/config.ts
 ```
 
-Now edit `config.ts` as needed.
+Now edit `src/config.ts` as needed.
 
 ### Running in GAS
 
 The function exposed to the GAS runtime as `main` will be taken from
-`main.ts`'s default export.
+`src/main.ts`'s default export.
 
 To create the final bundle for export to GAS, run:
 
 ```
 npm run build
-cat bundle.gs | pbcopy
+cat build/bundle.gs | pbcopy
 ```
 
 Now paste your clipboard contents into a `.gs` file at

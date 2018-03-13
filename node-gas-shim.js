@@ -36,4 +36,4 @@ global.Logger = {
 
 // Now run the main exported GAS function.
 
-require('./main.ts')['default']();
+require('./src/main.ts')['default']();
