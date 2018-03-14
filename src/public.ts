@@ -9,7 +9,13 @@ export function logExampleTimecardInfo() {
     Logger.log(res[0]);
 }
 
-export function updateRowsForDate(date = '2018-03-05') {
+interface UpdateResult {
+    date: string;
+    rowsAdded: number;
+    rowsRemoved: number;
+}
+
+export function updateRowsForDate(date: string): UpdateResult|null {
     const sheet = SpreadsheetApp.getActiveSheet();
 
     timecardSheet.validateSheetHeader(sheet);
@@ -19,7 +25,7 @@ export function updateRowsForDate(date = '2018-03-05') {
 
     if (cards.length === 0) {
         Logger.log(`No timecard rows matching ${date}.`);
-        return;
+        return null;
     }
 
     // The API may have adjusted the date to match the beginning of
@@ -31,9 +37,10 @@ export function updateRowsForDate(date = '2018-03-05') {
     lock.waitLock(1000);
 
     try {
-        timecardSheet.removeRowsWithStartDate(sheet, date);
+        let rowsRemoved = timecardSheet.removeRowsWithStartDate(sheet, date);
         Logger.log(`Adding ${cards.length} rows for ${date}.`);
         timecardSheet.addRows(sheet, cards);
+        return { rowsAdded: cards.length, rowsRemoved, date };
     } finally {
         lock.releaseLock();
     }
@@ -92,7 +99,25 @@ export function updateFromTock_() {
         return;
     }
 
-    updateRowsForDate(date);
+    const result = updateRowsForDate(date);
 
     SpreadsheetApp.flush();
+
+    let msg = '';
+
+    if (result) {
+        msg = (
+            `Added ${result.rowsAdded} rows of timecard data ` +
+            `from Tock for ${result.date}`
+        );
+        if (result.rowsRemoved) {
+            msg += `, removing ${result.rowsRemoved} old rows.`;
+        } else {
+            msg += `.`;
+        }
+    } else {
+        msg = `Tock doesn't have any timecard data for ${date}!`;
+    }
+
+    Browser.msgBox('Finished', msg, Browser.Buttons.OK);
 }

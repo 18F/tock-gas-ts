@@ -90,7 +90,7 @@ export function addRows(sheet: Sheet, cards: Timecard[]) {
       .setFontWeight('normal');
 }
 
-export function removeRowsWithStartDate(sheet: Sheet, date: Date|string) {
+export function removeRowsWithStartDate(sheet: Sheet, date: Date|string): number {
     date = normalizeDate(date);
 
     const col = getColumnNumber('start_date');
@@ -121,4 +121,6 @@ export function removeRowsWithStartDate(sheet: Sheet, date: Date|string) {
         Logger.log(`Deleting ${rowsToDelete} row(s) starting at ${startRow}.`);
         sheet.deleteRows(startRow, rowsToDelete);
     }
+
+    return rowsToDelete;
 }
