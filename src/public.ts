@@ -9,6 +9,7 @@ export function logExampleTimecardInfo() {
     Logger.log(res[0]);
 }
 
+// TODO: Wrap this in the Lock Service API.
 export function updateRowsForDate(date = '2018-03-05') {
     const sheet = SpreadsheetApp.getActiveSheet();
     const cards = tock.getTimecards({ date }).filter(tc => tc.billable);

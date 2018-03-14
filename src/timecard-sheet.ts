@@ -36,9 +36,17 @@ function normalizeDate(date: any): string {
 }
 
 export function addRows(sheet: Sheet, cards: Timecard[]) {
-    cards.forEach(card => {
-        sheet.appendRow(COLUMNS.map(column => card[column]));
-    });
+    // This is much faster than using .appendRow() for all the rows.
+    // However, it should be wrapped in the Lock Service API to
+    // ensure that weird collisions don't occur.
+    //
+    // For more details, see: https://stackoverflow.com/a/44695699
+    const lastRow = sheet.getLastRow();
+    sheet.insertRowsAfter(lastRow, cards.length);
+
+    const values = cards.map(card => COLUMNS.map(column => card[column]));
+    sheet.getRange(lastRow + 1, 1, cards.length, COLUMNS.length)
+      .setValues(values);
 }
 
 export function removeRowsWithStartDate(sheet: Sheet, date: Date|string) {
