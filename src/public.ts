@@ -15,6 +15,20 @@ interface UpdateResult {
     rowsRemoved: number;
 }
 
+function getFunctionName(func: Function): string {
+    // TypeScript doesn't seem to define the 'name' property on
+    // functions, perhaps because it's non-standard or something,
+    // but it seems to exist in GAS and Node, so we'll trust that
+    // it exists.
+    const name: string = (func as any)['name'];
+
+    if (!(name && typeof(name) === 'string')) {
+        throw new Error(`${func} has no name`);
+    }
+
+    return name;
+}
+
 export function updateRowsForDate(date: string): UpdateResult|null {
     const sheet = SpreadsheetApp.getActiveSheet();
 
@@ -58,11 +72,11 @@ export function onOpen() {
     const menuItems = [
         {
             name: 'Create empty timecard sheet',
-            functionName: 'createEmptyTimecardSheet_'
+            functionName: getFunctionName(createEmptyTimecardSheet_),
         },
         {
             name: 'Update timecard sheet from Tock...',
-            functionName: 'updateFromTock_'
+            functionName: getFunctionName(updateFromTock_),
         },
     ];
     spreadsheet.addMenu('Tock', menuItems);
