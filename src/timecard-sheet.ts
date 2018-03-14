@@ -11,6 +11,8 @@ const COLUMNS: Column[] = [
     'hours_spent'
 ];
 
+export const DATE_REGEX = /^\d\d\d\d-\d\d-\d\d$/;
+
 function getColumnNumber(column: Column): number {
     const index = COLUMNS.indexOf(column);
     if (index === -1) {
