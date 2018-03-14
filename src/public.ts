@@ -11,7 +11,8 @@ export function logExampleTimecardInfo() {
 
 export function updateRowsForDate(date = '2018-03-05') {
     const sheet = SpreadsheetApp.getActiveSheet();
-    const cards = tock.getTimecards({ date }).filter(tc => tc.billable);
+    const cards = tock.getTimecards({ date })
+      .filter(tc => tc.billable && tc.hours_spent > 0);
 
     if (cards.length === 0) {
         Logger.log(`No timecard rows matching ${date}.`);

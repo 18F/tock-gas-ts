@@ -45,7 +45,7 @@ export interface Timecard {
     project_id: string;
     project_name: string;
     profit_loss_account: string;
-    hours_spent: string;
+    hours_spent: number;
     start_date: string;
     end_date: string;
     billable: boolean;
@@ -66,5 +66,11 @@ export function getTimecards(options?: {
     user?: string;
     project?: string;
 }): Timecard[] {
-    return getJSON('/timecards.json', options as QueryArgs);
+    return getJSON('/timecards.json', options as QueryArgs)
+      .map((timecard: any) => ({
+        ...timecard,
+        // For some reason the API returns a string for this,
+        // so we'll parse it into a float.
+        hours_spent: parseFloat(timecard.hours_spent),
+      }));
 }
