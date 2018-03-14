@@ -35,6 +35,22 @@ function normalizeDate(date: any): string {
     return date;
 }
 
+export function validateSheetHeader(sheet: Sheet) {
+    const lastRow = sheet.getLastRow();
+
+    if (lastRow < 1) {
+        throw new Error('Sheet contains no rows!');
+    }
+
+    const firstRow = sheet.getRange(1, 1, 1, COLUMNS.length).getValues()[0];
+    COLUMNS.forEach((name, i) => {
+        if (firstRow[i] !== name) {
+            throw new Error(`Expected column ${i + 1} header to be ` +
+                            ` ${name} but it is ${firstRow[i]}`);
+        }
+    });
+}
+
 export function addRows(sheet: Sheet, cards: Timecard[]) {
     // This is much faster than using .appendRow() for all the rows.
     // However, it should be wrapped in the Lock Service API to

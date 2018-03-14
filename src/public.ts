@@ -11,6 +11,9 @@ export function logExampleTimecardInfo() {
 
 export function updateRowsForDate(date = '2018-03-05') {
     const sheet = SpreadsheetApp.getActiveSheet();
+
+    timecardSheet.validateSheetHeader(sheet);
+
     const cards = tock.getTimecards({ date })
       .filter(tc => tc.billable && tc.hours_spent > 0);
 
