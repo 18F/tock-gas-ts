@@ -1,0 +1,73 @@
+import { Timecard } from './tock';
+
+type Sheet = GoogleAppsScript.Spreadsheet.Sheet;
+
+type Column = 'user'|'hours_spent'|'start_date'|'project_name';
+
+const COLUMNS: Column[] = [
+    'start_date',
+    'user',
+    'project_name',
+    'hours_spent'
+];
+
+function getColumnNumber(column: Column): number {
+    const index = COLUMNS.indexOf(column);
+    if (index === -1) {
+        throw new Error(`Column ${column} does not exist!`);
+    }
+
+    // Spreadsheet columns start at 1, not zero.
+    return index + 1;
+}
+
+function normalizeDate(date: any): string {
+    if (typeof date === 'string') {
+        return date.trim();
+    }
+
+    if (date instanceof Date) {
+        return Utilities.formatDate(date, 'GMT', 'yyyy-MM-dd');
+    }
+
+    return date;
+}
+
+export function addRows(sheet: Sheet, cards: Timecard[]) {
+    cards.forEach(card => {
+        sheet.appendRow(COLUMNS.map(column => card[column]));
+    });
+}
+
+export function removeRowsWithStartDate(sheet: Sheet, date: Date|string) {
+    date = normalizeDate(date);
+
+    const col = getColumnNumber('start_date');
+
+    sheet.sort(col);
+
+    const numRows = sheet.getLastRow();
+    const range = sheet.getRange(2, col, numRows);
+    const values = range.getValues();
+    let startRow: number|null = null;
+    let rowsToDelete = 0;
+
+    for (let i = 0; i < values.length; i++) {
+        const rowDate = normalizeDate(values[i][0]);
+
+        if (rowDate === date) {
+            if (startRow === null) {
+                // Rows start at 1, and the first is the header row.
+                startRow = i + 2;
+            }
+            rowsToDelete += 1;
+        } else if (startRow !== null) {
+            break;
+        }
+    }
+
+    if (startRow !== null) {
+        Logger.log(`Deleting ${rowsToDelete} row(s) starting at ${startRow}.`);
+        sheet.deleteRows(startRow, rowsToDelete);
+    }
+}
