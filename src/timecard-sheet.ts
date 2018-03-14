@@ -1,6 +1,7 @@
 import { Timecard } from './tock';
 
 type Sheet = GoogleAppsScript.Spreadsheet.Sheet;
+type Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 
 type Column = 'user'|'hours_spent'|'start_date'|'project_name';
 
@@ -10,6 +11,13 @@ const COLUMNS: Column[] = [
     'project_name',
     'hours_spent'
 ];
+
+const COLUMN_WIDTHS: {[K in Column]: number} = {
+    'start_date': 100,
+    'user': 200,
+    'project_name': 400,
+    'hours_spent': 100,
+};
 
 export const DATE_REGEX = /^\d\d\d\d-\d\d-\d\d$/;
 
@@ -33,6 +41,22 @@ function normalizeDate(date: any): string {
     }
 
     return date;
+}
+
+export function createSheet(spreadsheet: Spreadsheet): Sheet {
+    const sheet = spreadsheet.insertSheet();
+
+    sheet.appendRow(COLUMNS);
+
+    sheet.getRange(1, 1, 1, COLUMNS.length).setFontWeight('bold');
+
+    COLUMNS.forEach(name => {
+        sheet.setColumnWidth(getColumnNumber(name), COLUMN_WIDTHS[name]);
+    });
+
+    sheet.setFrozenRows(1);
+
+    return sheet;
 }
 
 export function validateSheetHeader(sheet: Sheet) {
@@ -62,7 +86,8 @@ export function addRows(sheet: Sheet, cards: Timecard[]) {
 
     const values = cards.map(card => COLUMNS.map(column => card[column]));
     sheet.getRange(lastRow + 1, 1, cards.length, COLUMNS.length)
-      .setValues(values);
+      .setValues(values)
+      .setFontWeight('normal');
 }
 
 export function removeRowsWithStartDate(sheet: Sheet, date: Date|string) {

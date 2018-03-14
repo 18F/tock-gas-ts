@@ -41,17 +41,34 @@ export function updateRowsForDate(date = '2018-03-05') {
 
 // This is a special function that runs when the spreadsheet is open.
 export function onOpen() {
-    var spreadsheet = SpreadsheetApp.getActive();
+    const spreadsheet = SpreadsheetApp.getActive();
 
     if (!spreadsheet) {
         Logger.log('Active spreadsheet is null, not adding menu.');
         return;
     }
 
-    var menuItems = [
-        { name: 'Update from Tock...', functionName: 'updateFromTock_' }
+    const menuItems = [
+        {
+            name: 'Create empty timecard sheet',
+            functionName: 'createEmptyTimecardSheet_'
+        },
+        {
+            name: 'Update timecard sheet from Tock...',
+            functionName: 'updateFromTock_'
+        },
     ];
     spreadsheet.addMenu('Tock', menuItems);
+}
+
+export function createEmptyTimecardSheet_() {
+    var spreadsheet = SpreadsheetApp.getActive();
+
+    if (!spreadsheet) {
+        throw new Error('Unable to get active spreadsheet!');
+    }
+
+    timecardSheet.createSheet(spreadsheet);
 }
 
 export function updateFromTock_() {
