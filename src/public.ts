@@ -9,7 +9,6 @@ export function logExampleTimecardInfo() {
     Logger.log(res[0]);
 }
 
-// TODO: Wrap this in the Lock Service API.
 export function updateRowsForDate(date = '2018-03-05') {
     const sheet = SpreadsheetApp.getActiveSheet();
     const cards = tock.getTimecards({ date }).filter(tc => tc.billable);
@@ -23,9 +22,17 @@ export function updateRowsForDate(date = '2018-03-05') {
     // a week, so we'll use that.
     date = cards[0].start_date;
 
-    timecardSheet.removeRowsWithStartDate(sheet, date);
-    Logger.log(`Adding ${cards.length} rows for ${date}.`);
-    timecardSheet.addRows(sheet, cards);
+    const lock = LockService.getDocumentLock();
+
+    lock.waitLock(1000);
+
+    try {
+        timecardSheet.removeRowsWithStartDate(sheet, date);
+        Logger.log(`Adding ${cards.length} rows for ${date}.`);
+        timecardSheet.addRows(sheet, cards);
+    } finally {
+        lock.releaseLock();
+    }
 }
 
 // This is a special function that runs when the spreadsheet is open.
