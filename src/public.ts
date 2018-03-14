@@ -1,5 +1,7 @@
 import * as tock from './tock';
 import * as timecardSheet from './timecard-sheet';
+import * as ui from './ui';
+
 import { getFunctionName } from './util';
 
 export function logExampleTimecardInfo() {
@@ -10,13 +12,7 @@ export function logExampleTimecardInfo() {
     Logger.log(res[0]);
 }
 
-interface UpdateResult {
-    date: string;
-    rowsAdded: number;
-    rowsRemoved: number;
-}
-
-export function updateRowsForDate(date: string): UpdateResult|null {
+export function updateRowsForDate(date: string): ui.UpdateResult|null {
     const sheet = SpreadsheetApp.getActiveSheet();
 
     timecardSheet.validateSheetHeader(sheet);
@@ -104,21 +100,5 @@ export function updateFromTock_() {
 
     SpreadsheetApp.flush();
 
-    let msg = '';
-
-    if (result) {
-        msg = (
-            `Added ${result.rowsAdded} rows of timecard data ` +
-            `from Tock for ${result.date}`
-        );
-        if (result.rowsRemoved) {
-            msg += `, removing ${result.rowsRemoved} old rows.`;
-        } else {
-            msg += `.`;
-        }
-    } else {
-        msg = `Tock doesn't have any timecard data for ${date}!`;
-    }
-
-    Browser.msgBox('Finished', msg, Browser.Buttons.OK);
+    Browser.msgBox('Finished', ui.msgForUpdateResult(date, result), Browser.Buttons.OK);
 }
