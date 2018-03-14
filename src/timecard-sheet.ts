@@ -19,8 +19,6 @@ const COLUMN_WIDTHS: {[K in Column]: number} = {
     'hours_spent': 100,
 };
 
-export const DATE_REGEX = /^\d\d\d\d-\d\d-\d\d$/;
-
 function getColumnNumber(column: Column): number {
     const index = COLUMNS.indexOf(column);
     if (index === -1) {

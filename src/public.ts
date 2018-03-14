@@ -2,7 +2,7 @@ import * as tock from './tock';
 import * as timecardSheet from './timecard-sheet';
 import * as ui from './ui';
 
-import { getFunctionName } from './util';
+import { getFunctionName, isDateValid } from './util';
 
 export function logExampleTimecardInfo() {
     const res = tock.getTimecards({
@@ -87,7 +87,7 @@ export function updateFromTock_() {
         return;
     }
 
-    if (!timecardSheet.DATE_REGEX.test(date)) {
+    if (!isDateValid(date)) {
         Browser.msgBox(
             'Error',
             'Please enter a date in YYYY-MM-DD format!',

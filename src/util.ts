@@ -11,3 +11,9 @@ export function getFunctionName(func: Function): string {
 
     return name;
 }
+
+const DATE_REGEX = /^\d\d\d\d-\d\d-\d\d$/;
+
+export function isDateValid(date: string): boolean {
+    return DATE_REGEX.test(date);
+}
