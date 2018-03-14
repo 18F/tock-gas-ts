@@ -46,6 +46,14 @@ runtime, run:
 node node-gas-shim.js
 ```
 
+### Running tests
+
+The test suite can be run via:
+
+```
+npm test
+```
+
 ## Other resources
 
 * [18F/Ops-GAS-Public](https://github.com/18F/Ops-GAS-Public) is an

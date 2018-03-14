@@ -1,5 +1,6 @@
 import * as tock from './tock';
 import * as timecardSheet from './timecard-sheet';
+import { getFunctionName } from './util';
 
 export function logExampleTimecardInfo() {
     const res = tock.getTimecards({
@@ -13,20 +14,6 @@ interface UpdateResult {
     date: string;
     rowsAdded: number;
     rowsRemoved: number;
-}
-
-function getFunctionName(func: Function): string {
-    // TypeScript doesn't seem to define the 'name' property on
-    // functions, perhaps because it's non-standard or something,
-    // but it seems to exist in GAS and Node, so we'll trust that
-    // it exists.
-    const name: string = (func as any)['name'];
-
-    if (!(name && typeof(name) === 'string')) {
-        throw new Error(`${func} has no name`);
-    }
-
-    return name;
 }
 
 export function updateRowsForDate(date: string): UpdateResult|null {

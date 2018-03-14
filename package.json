@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "Example TypeScript-based Google Apps Script project.",
   "dependencies": {
+    "@types/chai": "^4.1.2",
     "@types/google-apps-script": "0.0.21",
+    "@types/mocha": "^2.2.48",
     "almond": "^0.3.3",
+    "chai": "^4.1.2",
+    "mocha": "^5.0.4",
     "sync-request": "^6.0.0",
     "ts-node": "^5.0.1",
     "typescript": "^2.7.2"
@@ -12,7 +16,7 @@
   "devDependencies": {},
   "scripts": {
     "build": "tsc && node build/define-functions.js > build/top-level-functions.gs && cat node_modules/almond/almond.js build/bundle-amd.gs build/top-level-functions.gs > build/bundle.gs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -r ./node-gas-shim test/**/*.ts"
   },
   "author": "Atul Varma <atul.varma@gsa.gov>",
   "license": "CC0-1.0"
