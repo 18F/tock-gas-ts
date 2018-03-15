@@ -2,6 +2,7 @@ import * as tock from './tock';
 import * as timecardSheet from './timecard-sheet';
 import * as ui from './ui';
 
+import { PROJECT_PREFIX } from './config';
 import { getFunctionName, isDateValid } from './util';
 
 export function logExampleTimecardInfo() {
@@ -18,6 +19,7 @@ export function updateRowsForDate(date: string): ui.UpdateResult|null {
     timecardSheet.validateSheetHeader(sheet);
 
     const cards = tock.getTimecards({ date })
+      .filter(tc => tc.project_name.indexOf(PROJECT_PREFIX) === 0)
       .filter(tc => tc.billable && tc.hours_spent > 0);
 
     if (cards.length === 0) {
