@@ -16,7 +16,7 @@
   "devDependencies": {},
   "scripts": {
     "build": "tsc && node build/define-functions.js > build/top-level-functions.gs && cat node_modules/almond/almond.js build/bundle-amd.gs build/top-level-functions.gs > build/bundle.gs",
-    "test": "mocha -r ./node-gas-shim test/**/*.ts"
+    "test": "mocha -r ./node-gas-shim 'test/**/*.{ts,js}'"
   },
   "author": "Atul Varma <atul.varma@gsa.gov>",
   "license": "CC0-1.0"
