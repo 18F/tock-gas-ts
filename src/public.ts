@@ -3,7 +3,15 @@ import * as timecardSheet from './timecard-sheet';
 import * as ui from './ui';
 
 import { PROJECT_PREFIX } from './config';
-import { getFunctionName, isDateStringValid } from './util';
+import {
+    getFunctionName,
+    isDateStringValid,
+    toDate,
+    getClosestTockStartDate,
+    copyDate,
+    ONE_DAY_IN_MS,
+    normalizeDateToString
+} from './util';
 
 export function logExampleTimecardInfo() {
     const res = tock.getTimecards({
@@ -103,4 +111,38 @@ export function updateFromTock_() {
     SpreadsheetApp.flush();
 
     Browser.msgBox('Finished', ui.msgForUpdateResult(date, result), Browser.Buttons.OK);
+}
+
+/**
+ * Return the range of Tock dates (Sundays) between two dates.
+ *
+ * @param {DATE(2018, 1, 14)} start The start date. If this date is not on
+ *   a Sunday, the first Sunday prior to this date is used.
+ * @param {"2018-03-25"} end The end date. If this date is not on a Sunday,
+ *   the first Sunday prior to this date is used.
+ *
+ * @return The range of dates between the start and end.
+ * @customfunction
+ */
+export function tockDateRange(start: string|Date, end: string|Date): Date[] {
+    const dates: Date[] = [];
+
+    start = getClosestTockStartDate(toDate(start));
+    end = getClosestTockStartDate(toDate(end));
+
+    if (start.getTime() > end.getTime()) {
+        throw new Error(`Start date (${normalizeDateToString(start)}) ` +
+                        `is after end (${normalizeDateToString(end)})`);
+    }
+
+    const curr = copyDate(start);
+
+    while (curr.getTime() < end.getTime()) {
+        dates.push(copyDate(curr));
+        curr.setTime(curr.getTime() + ONE_DAY_IN_MS * 7);
+    }
+
+    dates.push(copyDate(end));
+
+    return dates;
 }
