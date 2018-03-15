@@ -3,13 +3,14 @@ import { Timecard } from './tock';
 type Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 type Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 
-type Column = 'user'|'hours_spent'|'start_date'|'project_name';
+type Column = 'user'|'hours_spent'|'start_date'|'project_name'|'grade';
 
 const COLUMNS: Column[] = [
     'start_date',
     'user',
     'project_name',
-    'hours_spent'
+    'hours_spent',
+    'grade',
 ];
 
 const COLUMN_WIDTHS: {[K in Column]: number} = {
@@ -17,6 +18,7 @@ const COLUMN_WIDTHS: {[K in Column]: number} = {
     'user': 200,
     'project_name': 400,
     'hours_spent': 100,
+    'grade': 100,
 };
 
 function getColumnNumber(column: Column): number {
@@ -82,7 +84,14 @@ export function addRows(sheet: Sheet, cards: Timecard[]) {
     const lastRow = sheet.getLastRow();
     sheet.insertRowsAfter(lastRow, cards.length);
 
-    const values = cards.map(card => COLUMNS.map(column => card[column]));
+    const values = cards.map(card => COLUMNS.map(column => {
+        const value = card[column];
+
+        // setValues() doesn't let us pass in `null` as a value, so
+        // we'll convert such values to the empty string. Which is
+        // weird, but whatever.
+        return value === null ? '' : value
+    }));
     sheet.getRange(lastRow + 1, 1, cards.length, COLUMNS.length)
       .setValues(values)
       .setFontWeight('normal');

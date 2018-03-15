@@ -58,6 +58,7 @@ export interface Timecard {
     expense_profit_loss_account_name: null;
     employee_organization: string;
     project_organization: string;
+    grade: number|null;
 }
 
 // https://github.com/18F/tock/blob/master/api-docs/timecards.md
