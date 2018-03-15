@@ -1,4 +1,5 @@
 import { Timecard } from './tock';
+import { normalizeDate } from './util';
 
 type Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 type Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
@@ -29,18 +30,6 @@ function getColumnNumber(column: Column): number {
 
     // Spreadsheet columns start at 1, not zero.
     return index + 1;
-}
-
-function normalizeDate(date: any): string {
-    if (typeof date === 'string') {
-        return date.trim();
-    }
-
-    if (date instanceof Date) {
-        return Utilities.formatDate(date, 'GMT', 'yyyy-MM-dd');
-    }
-
-    return date;
 }
 
 export function createSheet(spreadsheet: Spreadsheet): Sheet {
