@@ -15,26 +15,26 @@ describe('getFunctionName()', () => {
     });
 });
 
-describe('normalizeDate', () => {
-    const { normalizeDate } = util;
+describe('normalizeDateToString', () => {
+    const { normalizeDateToString } = util;
 
     it('trims strings', () => {
-        expect(normalizeDate(' 2018-01-01 ')).to.eql('2018-01-01');
+        expect(normalizeDateToString(' 2018-01-01 ')).to.eql('2018-01-01');
     });
 
     it('converts Dates to strings', () => {
-        expect(normalizeDate(new Date(2018, 1, 2))).to.eql('2018-01-02');
-        expect(normalizeDate(new Date(2018, 1, 21))).to.eql('2018-01-21');
-        expect(normalizeDate(new Date(2018, 11, 2))).to.eql('2018-11-02');
+        expect(normalizeDateToString(new Date(2018, 1, 2))).to.eql('2018-01-02');
+        expect(normalizeDateToString(new Date(2018, 1, 21))).to.eql('2018-01-21');
+        expect(normalizeDateToString(new Date(2018, 11, 2))).to.eql('2018-11-02');
     });
 });
 
-describe('isDateValid', () => {
+describe('isDateStringValid', () => {
     it('returns true when date is YYYY-MM-DD', () => {
-        expect(util.isDateValid('2018-01-01')).to.be.true;
+        expect(util.isDateStringValid('2018-01-01')).to.be.true;
     });
 
     it('returns false when date is not YYYY-MM-DD', () => {
-        expect(util.isDateValid('2018-01-O1')).to.be.false;
+        expect(util.isDateStringValid('2018-01-O1')).to.be.false;
     });
 });

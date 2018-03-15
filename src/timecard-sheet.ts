@@ -1,5 +1,5 @@
 import { Timecard } from './tock';
-import { normalizeDate } from './util';
+import { normalizeDateToString } from './util';
 
 type Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 type Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
@@ -87,7 +87,7 @@ export function addRows(sheet: Sheet, cards: Timecard[]) {
 }
 
 export function removeRowsWithStartDate(sheet: Sheet, date: Date|string): number {
-    date = normalizeDate(date);
+    date = normalizeDateToString(date);
 
     const col = getColumnNumber('start_date');
 
@@ -100,7 +100,7 @@ export function removeRowsWithStartDate(sheet: Sheet, date: Date|string): number
     let rowsToDelete = 0;
 
     for (let i = 0; i < values.length; i++) {
-        const rowDate = normalizeDate(values[i][0]);
+        const rowDate = normalizeDateToString(values[i][0]);
 
         if (rowDate === date) {
             if (startRow === null) {

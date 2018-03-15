@@ -14,7 +14,7 @@ export function getFunctionName(func: Function): string {
 
 const DATE_REGEX = /^\d\d\d\d-\d\d-\d\d$/;
 
-export function isDateValid(date: string): boolean {
+export function isDateStringValid(date: string): boolean {
     return DATE_REGEX.test(date);
 }
 
@@ -24,7 +24,7 @@ function pad(n: string|number, width: number, z: string = '0') {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-export function normalizeDate(date: any): string {
+export function normalizeDateToString(date: any): string {
     if (typeof date === 'string') {
         return date.trim();
     }
