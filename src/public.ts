@@ -146,3 +146,37 @@ export function tockDateRange(start: string|Date, end: string|Date): Date[] {
 
     return dates;
 }
+
+type CellType = string|Date|number|boolean;
+
+function flatten(values: CellType[][]): CellType[] {
+    const result: CellType[] = [];
+
+    values.forEach(moreValues => {
+        moreValues.forEach(value => result.push(value));
+    });
+
+    return result;
+}
+
+/**
+ * Return a comma-separated list of values that are in the
+ * second list, but not in the first.
+ *
+ * @param {Range} values A list of values.
+ * @param {Range} allValues A list of values that is expected
+ *   to be a superset of the first list of values.
+ *
+ * @return A comma-separated list of values in the second list
+ *   that are not in the first list.
+ * @customfunction
+ */
+export function listDifferences(values: CellType[][], allValues: CellType[][]): string {
+    function toStr(value: CellType) {
+        return value instanceof Date ? normalizeDateToString(value) : value.toString();
+    }
+
+    const set = flatten(values).map(toStr);
+    const superset = flatten(allValues).map(toStr);
+    return superset.filter(value => set.indexOf(value) === -1).join(', ');
+}

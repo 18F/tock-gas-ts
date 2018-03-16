@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { normalizeDateToString } from '../src/util';
-import { tockDateRange } from '../src/public';
+import { tockDateRange, listDifferences } from '../src/public';
 
 function str(dates: Date[]): string[] {
     return dates.map(normalizeDateToString);
@@ -27,5 +27,14 @@ describe('tockDateRange', () => {
         expect(() => {
             tockDateRange('2018-01-14', '2017-01-01');
         }).to.throw('Start date (2018-01-14) is after end (2017-01-01)');
+    });
+});
+
+describe('listDifferences', () => {
+    it('works', () => {
+        expect(listDifferences(
+            [['a'], ['b'], ['e']],
+            [['a'], ['b'], ['c'], [new Date(2008, 0, 1)], ['e']])
+        ).to.eql('c, 2008-01-01');
     });
 });
