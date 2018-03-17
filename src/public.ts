@@ -10,7 +10,9 @@ import {
     getClosestTockStartDate,
     copyDate,
     ONE_DAY_IN_MS,
-    normalizeDateToString
+    normalizeDateToString,
+    toCellTypeArray,
+    CellType,
 } from './util';
 
 export function logExampleTimecardInfo() {
@@ -145,26 +147,6 @@ export function tockDateRange(start: string|Date, end: string|Date): Date[] {
     dates.push(copyDate(end));
 
     return dates;
-}
-
-type CellType = string|Date|number|boolean;
-
-function toCellTypeArray(values: any, result: CellType[] = []): CellType[] {
-    if (Array.isArray(values)) {
-        values.forEach(value => toCellTypeArray(value, result));
-    } else {
-        if (typeof values === 'string' ||
-            typeof values === 'number' ||
-            typeof values === 'boolean' ||
-            values instanceof Date)
-        {
-            result.push(values);
-        } else {
-            throw new Error(`Unexpected cell type: ${values} (${typeof values})`);
-        }
-    }
-
-    return result;
 }
 
 /**

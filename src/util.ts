@@ -86,3 +86,23 @@ export function getClosestTockStartDate(date: Date): Date {
 
     return result;
 }
+
+export type CellType = string|Date|number|boolean;
+
+export function toCellTypeArray(values: any, result: CellType[] = []): CellType[] {
+    if (Array.isArray(values)) {
+        values.forEach(value => toCellTypeArray(value, result));
+    } else {
+        if (typeof values === 'string' ||
+            typeof values === 'number' ||
+            typeof values === 'boolean' ||
+            values instanceof Date)
+        {
+            result.push(values);
+        } else {
+            throw new Error(`Unexpected cell type: ${values} (${typeof values})`);
+        }
+    }
+
+    return result;
+}

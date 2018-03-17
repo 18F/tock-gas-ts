@@ -49,3 +49,28 @@ describe('toDate', () => {
         expect(date.getDate()).to.eql(14);
     });
 });
+
+describe('toCellTypeArray', () => {
+    it('wraps primitive types in an array if needed', () => {
+        expect(util.toCellTypeArray(1)).to.eql([1]);
+        expect(util.toCellTypeArray(true)).to.eql([true]);
+        expect(util.toCellTypeArray('blah')).to.eql(['blah']);
+
+        const date = new Date();
+        expect(util.toCellTypeArray(date)).to.eql([date]);
+    });
+
+    it('throws errors on unexpected types', () => {
+        expect(() => {
+            util.toCellTypeArray(null);
+        }).to.throw('Unexpected cell type: null (object)');
+    });
+
+    it('leaves one dimensional arrays unchanged', () => {
+        expect(util.toCellTypeArray([1])).to.eql([1]);
+    });
+
+    it('flattens multi-dimensional arrays', () => {
+        expect(util.toCellTypeArray([[1], [2]])).to.eql([1, 2]);
+    });
+});
