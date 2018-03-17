@@ -4,7 +4,11 @@ import { normalizeDateToString } from './util';
 type Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 type Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 
-type Column = 'user'|'hours_spent'|'start_date'|'project_name'|'grade';
+type DataColumn = 'user'|'hours_spent'|'start_date'|'project_name'|'grade';
+type FormulaColumn = 'amount_billed';
+type Column = DataColumn|FormulaColumn;
+
+const COLUMN_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 const COLUMNS: Column[] = [
     'start_date',
@@ -12,6 +16,7 @@ const COLUMNS: Column[] = [
     'project_name',
     'hours_spent',
     'grade',
+    'amount_billed',
 ];
 
 const COLUMN_WIDTHS: {[K in Column]: number} = {
@@ -20,7 +25,21 @@ const COLUMN_WIDTHS: {[K in Column]: number} = {
     'project_name': 400,
     'hours_spent': 100,
     'grade': 100,
+    'amount_billed': 100,
 };
+
+function getColumnLetter(column: Column): string {
+    const index = COLUMNS.indexOf(column);
+    if (index === -1) {
+        throw new Error(`Column ${column} does not exist!`);
+    }
+
+    if (index >= COLUMN_LETTERS.length) {
+        throw new Error(`Column ${column} does not have a letter!`);
+    }
+
+    return COLUMN_LETTERS[index];
+}
 
 function getColumnNumber(column: Column): number {
     const index = COLUMNS.indexOf(column);
@@ -64,6 +83,18 @@ export function validateSheetHeader(sheet: Sheet) {
     });
 }
 
+function valueForColumn(card: Timecard, column: Column, row: number): any {
+    switch (column) {
+        case 'amount_billed':
+        const hours_spent = `${getColumnLetter('hours_spent')}${row}`;
+        const grade = `${getColumnLetter('grade')}${row}`;
+        return `=${hours_spent} * VLOOKUP(${grade}, GradeRates, 2)`;
+
+        default:
+        return card[column];
+    }
+}
+
 export function addRows(sheet: Sheet, cards: Timecard[]) {
     // This is much faster than using .appendRow() for all the rows.
     // However, it should be wrapped in the Lock Service API to
@@ -73,8 +104,8 @@ export function addRows(sheet: Sheet, cards: Timecard[]) {
     const lastRow = sheet.getLastRow();
     sheet.insertRowsAfter(lastRow, cards.length);
 
-    const values = cards.map(card => COLUMNS.map(column => {
-        const value = card[column];
+    const values = cards.map((card, i) => COLUMNS.map(column => {
+        const value = valueForColumn(card, column, lastRow + i + 1);
 
         // setValues() doesn't let us pass in `null` as a value, so
         // we'll convert such values to the empty string. Which is
