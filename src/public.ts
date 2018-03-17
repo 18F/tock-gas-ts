@@ -149,12 +149,20 @@ export function tockDateRange(start: string|Date, end: string|Date): Date[] {
 
 type CellType = string|Date|number|boolean;
 
-function flatten(values: CellType[][]): CellType[] {
-    const result: CellType[] = [];
-
-    values.forEach(moreValues => {
-        moreValues.forEach(value => result.push(value));
-    });
+function toCellTypeArray(values: any, result: CellType[] = []): CellType[] {
+    if (Array.isArray(values)) {
+        values.forEach(value => toCellTypeArray(value, result));
+    } else {
+        if (typeof values === 'string' ||
+            typeof values === 'number' ||
+            typeof values === 'boolean' ||
+            values instanceof Date)
+        {
+            result.push(values);
+        } else {
+            throw new Error(`Unexpected cell type: ${values} (${typeof values})`);
+        }
+    }
 
     return result;
 }
@@ -171,12 +179,12 @@ function flatten(values: CellType[][]): CellType[] {
  *   that are not in the first list.
  * @customfunction
  */
-export function listDifferences(values: CellType[][], allValues: CellType[][]): string {
+export function listDifferences(values: any, allValues: any): string {
     function toStr(value: CellType) {
         return value instanceof Date ? normalizeDateToString(value) : value.toString();
     }
 
-    const set = flatten(values).map(toStr);
-    const superset = flatten(allValues).map(toStr);
+    const set = toCellTypeArray(values).map(toStr);
+    const superset = toCellTypeArray(allValues).map(toStr);
     return superset.filter(value => set.indexOf(value) === -1).join(', ');
 }
