@@ -1,8 +1,71 @@
-This is an attempt to make a simple TypeScript-based
-[Google Apps Script (GAS)][GAS] project for interacting
-with [Tock][] data.
+This repository contains code and example spreadsheets
+to facilitate the integration of [Tock][] data with
+Google Spreadsheets via [Google Apps Script (GAS)][GAS].
 
 ## Quick start
+
+If you work for the GSA, this is easy
+
+1. Make a copy of the
+   [Tock Burn Document Example Template][example].
+
+2. In your copy, visit the "Settings" sheet and make
+   any necessary changes.
+
+3. Visit the "Timecards" sheet and delete all but the
+   first row.
+
+4. Find the "Tock" pull-down menu and choose
+   "Update timecard sheet from Tock...", entering a
+   date when it prompts you.
+
+5. Visit the "Burn Sheet" sheet. Change the
+   project field to the *exact* name of the project
+   you want to create a burn document for, as it's
+   reported in Tock. Then change its budget and
+   average hourly rate, as well as its dates
+   and participants. Follow the instructions
+   on the sheet for adding weeks and/or participants
+   as needed. Also take a look at the "Sanity checks"
+   section to make sure you're not forgetting anything.
+
+You can add multiple burn sheets for different projects
+by copying the "Burn sheet" sheet and repeating step 5.
+
+Make sure you regularly visit the "Timecards" sheet and
+repeat step 4 to ensure that your Tock data stays
+up-to-date!
+
+[example]: https://docs.google.com/spreadsheets/d/14GnoVKA0O7tiOsfLp_v3UJDj6fuRfxWrx2zfku4ewwI/edit?usp=sharing
+
+## Not-so-quick start
+
+If you don't have access to the GSA's Google Apps
+account, or if for some reason the example template
+is no longer accessible, it's ok!  But it'll take more
+work.
+
+1. First, you'll want to go through the
+   development instructions below, at least through the
+   "Running in GAS" section. Make sure you now have the JS
+   bundle in your clipboard.
+
+2. You can import the Excel spreadsheet at
+   `examples/Tock Burn Document Example Template.xlsx`
+   to Google Sheets. Then you'll need to find the
+   "Tools" pull-down menu, choose "Script editor",
+   and paste in the script from your clipboard.
+   Then save the code, go back to the
+   spreadsheet, and reload the page in your browser.
+
+At this point you can follow the quick start instructions,
+starting at step 2.
+
+## Development instructions
+
+This section contains details on developing the
+code in this repository, as well as information on
+how to bundle it for deployment.
 
 ### Setup
 
@@ -13,6 +76,11 @@ npm install
 ```
 
 ### Configuring settings
+
+**Note:** If you're using one of the example spreadsheets, don't
+worry about this section--everything it covers will
+be explained in the "Settings" sheet of the example
+spreadsheet you're using.
 
 The `src/settings.ts` file contains settings that are
 dynamically pulled from a different place, depending on the
