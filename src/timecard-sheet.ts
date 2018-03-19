@@ -83,12 +83,13 @@ export function validateSheetHeader(sheet: Sheet) {
     });
 }
 
-function valueForColumn(card: Timecard, column: Column, row: number): any {
+export function valueForColumn(card: Timecard, column: Column, row: number): any {
     switch (column) {
         case 'amount_billed':
         const hours_spent = `${getColumnLetter('hours_spent')}${row}`;
         const grade = `${getColumnLetter('grade')}${row}`;
-        return `=${hours_spent} * VLOOKUP(${grade}, GradeRates, 2)`;
+        const gradeRate = (grade: string) => `VLOOKUP(${grade}, GradeRates, 2)`;
+        return `=${hours_spent} * IF(${grade}="", ${gradeRate('-1')}, ${gradeRate(grade)})`;
 
         default:
         return card[column];
