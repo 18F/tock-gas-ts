@@ -4,6 +4,8 @@ require('ts-node/register');
 
 const request = require('sync-request');
 
+const { isSettingRequired } = require('./src/settings.ts');
+
 // Define the GAS global APIs we use here.
 
 // https://developers.google.com/apps-script/reference/url-fetch/http-response
@@ -31,6 +33,42 @@ global.UrlFetchApp = {
 global.Logger = {
     log(msg) {
         console.log(msg);
+    }
+};
+
+// https://developers.google.com/apps-script/reference/spreadsheet/range
+class Range {
+    constructor(value) {
+        this.value = value;
+    }
+
+    getValue() {
+        return this.value;
+    }
+}
+
+// https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet
+class Spreadsheet {
+    getRangeByName(name) {
+        if (/^[A-Z0-9_]+$/.test(name)) {
+            if (name in process.env) {
+                return new Range(process.env[name]);
+            } else {
+                if (isSettingRequired(name)) {
+                    throw new Error(`Please define ${name} in your environment`);
+                }
+                return new Range('');
+            }
+        } else {
+            return null;
+        }
+    }
+}
+
+// https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app
+global.SpreadsheetApp = {
+    getActive: function() {
+        return new Spreadsheet();
     }
 };
 

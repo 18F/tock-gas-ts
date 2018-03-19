@@ -1,7 +1,0 @@
-export const TOCK_API_KEY = "put your Tock API key here!";
-
-export const TOCK_API_URL = "https://tock.18f.gov/api";
-
-// We only care about projects with the following prefix.
-// Leave as an empty string to consider all projects.
-export const PROJECT_PREFIX = 'Custom Partner Solutions';

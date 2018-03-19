@@ -12,30 +12,57 @@ First, install dependencies:
 npm install
 ```
 
-Then create the configuration module:
+### Configuring settings
 
-```
-cp src/config.ts.sample src/config.ts
-```
+The `src/settings.ts` file contains settings that are
+dynamically pulled from a different place, depending on the
+context the script is run in:
 
-Now edit `src/config.ts` as needed.
+* If the script is run in Node, then the setting is
+  expected to exist in the environment.
+
+* If the script is run in GAS (i.e., from an actual
+  Google Spreadsheet), then the setting is expected to
+  exist in a cell that is identified by a [named range][]
+  with the name of the setting. For example, if the setting
+  is called `FOO`, then there should be a
+  named range in the spreadsheet called `FOO`, and
+  its upper-left cell should contain the setting's value.
+
+Here are the settings that can be configured:
+
+* `TOCK_API_KEY` is the Tock API key that will be used when
+  authenticating requests to Tock.
+
+* `PROJECT_PREFIX_FILTER` is an optional string. Set it to
+  automatically filter out any timecard entries whose project
+  name doesn't start with the value you provide. For
+  example, setting it to `Custom Partner Solutions` will
+  ensure that only timecard data pertaining to CPS-related
+  projects is returned.
+
+[named range]: https://support.google.com/docs/answer/63175
 
 ### Running in GAS
 
 Any functions exported in `src/public.ts` will be exposed to the
 GAS runtime as top-level functions.
 
-To create the final bundle for export to GAS, run:
+To create the final bundle for export to GAS on OS X, run:
 
 ```
-npm run build
-cat build/bundle.gs | pbcopy
+npm run osx-clipboard
 ```
+
+(If you're on windows, use `npm run win32-clipboard` instead.)
 
 Now paste your clipboard contents into a `.gs` file at
-[script.google.com][]. (Note that while deployment is supported
-through the command-line by tools like `clasp`, we can't use
-them because we don't have API access to Google Apps.)
+[script.google.com][].
+
+Note that while deployment is supported through the command-line
+by tools like `clasp`, we can't use them because we don't have
+API access to Google Apps. So we have to use the clipboard
+for now.
 
 ### Running in Node
 
@@ -45,6 +72,9 @@ runtime, run:
 ```
 node node-gas-shim.js
 ```
+
+Note that only a few parts of the GAS runtime are currently
+emulated, so this probably won't work for all public functions.
 
 ### Running tests
 

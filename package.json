@@ -17,7 +17,8 @@
   "scripts": {
     "build": "tsc && node build/define-functions.js > build/top-level-functions.gs && cat node_modules/almond/almond.js build/bundle-amd.gs build/top-level-functions.gs > build/bundle.gs",
     "osx-clipboard": "npm run build && cat build/bundle.gs | pbcopy && echo 'Now paste your clipboard contents into script.google.com.'",
-    "test": "mocha -r ./node-gas-shim 'test/**/*.{ts,js}'"
+    "win32-clipboard": "npm run build && cat build/bundle.gs | clip && echo 'Now paste your clipboard contents into script.google.com.'",
+    "test": "mocha -r ./node-gas-shim test/**/*.{ts,js}"
   },
   "author": "Atul Varma <atul.varma@gsa.gov>",
   "license": "CC0-1.0"

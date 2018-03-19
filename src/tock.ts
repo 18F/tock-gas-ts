@@ -1,4 +1,4 @@
-import { TOCK_API_KEY, TOCK_API_URL } from './config';
+import { getSetting, TOCK_API_URL } from './settings';
 
 export interface QueryArgs {
     [key: string]: string;
@@ -17,6 +17,8 @@ export function getJSON(path: string, queryArgs?: QueryArgs): any {
     if (queryArgs) {
         url += `?${queryArgsToString(queryArgs)}`;
     }
+
+    const TOCK_API_KEY = getSetting('TOCK_API_KEY');
 
     const response = UrlFetchApp.fetch(url, {
         headers: {

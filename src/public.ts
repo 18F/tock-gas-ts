@@ -2,7 +2,7 @@ import * as tock from './tock';
 import * as timecardSheet from './timecard-sheet';
 import * as ui from './ui';
 
-import { PROJECT_PREFIX } from './config';
+import { getSetting } from './settings';
 import {
     getFunctionName,
     isDateStringValid,
@@ -28,8 +28,10 @@ export function updateRowsForDate(date: string): ui.UpdateResult|null {
 
     timecardSheet.validateSheetHeader(sheet);
 
+    const PROJECT_PREFIX_FILTER = getSetting('PROJECT_PREFIX_FILTER');
+
     const cards = tock.getTimecards({ date })
-      .filter(tc => tc.project_name.indexOf(PROJECT_PREFIX) === 0)
+      .filter(tc => tc.project_name.indexOf(PROJECT_PREFIX_FILTER) === 0)
       .filter(tc => tc.billable && tc.hours_spent > 0);
 
     if (cards.length === 0) {

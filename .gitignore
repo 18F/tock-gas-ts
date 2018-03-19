@@ -2,4 +2,3 @@ node_modules/
 build/bundle-amd.gs
 build/bundle.gs
 build/top-level-functions.gs
-src/config.ts
