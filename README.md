@@ -2,10 +2,10 @@ This repository contains code and example spreadsheets
 to facilitate the integration of [Tock][] data with
 Google Spreadsheets via [Google Apps Script (GAS)][GAS].
 
-Here's a screenshot of the burn document example:
+Here's a screenshot of the burn document example
+spreadsheet (all data is fake):
 
 ![Burn document example screenshot](https://user-images.githubusercontent.com/124687/37600915-0dc46950-2b5f-11e8-9b46-428d6298b013.png)
-
 
 ## Quick start
 
